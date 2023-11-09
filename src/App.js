@@ -1,37 +1,20 @@
 import React, { useState } from 'react';
 import './App.css';
 import Page from './components/Page';
-import {
-  RecoilRoot,
-  atom,
-  selector,
-  useRecoilState,
-  useRecoilValue,
-  useSetRecoilState,
-} from 'recoil';
+import { atom, useAtom, Provider } from 'jotai';
 
-const isDarkState = atom({
-  key: 'isDarkState',
-  default: false,
-});
-
-const isDarkButton = selector({
-  key: 'isDarkButton',
-  get: ({ get }) => get(isDarkState),
-  set: ({ set }) => set(isDarkState, (prev) => !prev),
-});
+const isDarkState = atom(false);
 
 function App() {
   return (
-    <RecoilRoot>
+    <Provider>
       <RecoilApp />
-    </RecoilRoot>
+    </Provider>
   );
 }
 
 function RecoilApp() {
-  const isDark = useRecoilValue(isDarkState);
-  const setIsDark = useSetRecoilState(isDarkButton);
+  const [isDark, setIsDark] = useAtom(isDarkState);
 
   return (
     <Page isDark={isDark} toggleThema={() => setIsDark((prev) => !prev)} />
